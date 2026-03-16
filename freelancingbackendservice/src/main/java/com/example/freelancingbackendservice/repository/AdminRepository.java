@@ -1,6 +1,6 @@
 package com.example.freelancingbackendservice.repository;
 
-import com.freelancerconnect.entity.Admin;
+import com.example.freelancingbackendservice.entity.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

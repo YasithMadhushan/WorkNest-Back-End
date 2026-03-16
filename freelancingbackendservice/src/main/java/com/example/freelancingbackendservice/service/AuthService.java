@@ -146,7 +146,7 @@ public class AuthService {
             freelancer.setTermsAccepted(otpData.isTermsAccepted());
             freelancerRepository.save(freelancer);
         } else if ("ADMIN".equalsIgnoreCase(otpData.getRole())) {
-            com.freelancerconnect.entity.Admin admin = new com.freelancerconnect.entity.Admin();
+            com.example.freelancingbackendservice.entity.Admin admin = new com.example.freelancingbackendservice.entity.Admin();
             admin.setFullName(otpData.getFullName());
             admin.setEmail(otpData.getEmail());
             admin.setPassword(otpData.getPassword());
@@ -159,9 +159,9 @@ public class AuthService {
     }
 
     @Autowired
-    private com.freelancerconnect.repository.AdminRepository adminRepository;
+    private com.example.freelancingbackendservice.repository.AdminRepository adminRepository;
 
-    public com.freelancerconnect.dto.LoginResponse login(String identifier, String password) {
+    public com.example.freelancingbackendservice.dto.LoginResponse login(String identifier, String password) {
         System.out.println("Login attempt for: " + identifier);
 
         // --- Admin Login ---
@@ -178,7 +178,7 @@ public class AuthService {
             System.out.println("Admin found! Checking password...");
             if (checkPassword(password, admin.getPassword())) {
                 upgradeAdminPassword(admin, password);
-                return new com.freelancerconnect.dto.LoginResponse("Login successful as Admin!", admin.getId(), "ADMIN",
+                return new com.example.freelancingbackendservice.dto.LoginResponse("Login successful as Admin!", admin.getId(), "ADMIN",
                         admin.getFullName(), admin.getEmail(), 100);
             } else {
                 System.out.println("Admin password check failed.");
@@ -194,7 +194,7 @@ public class AuthService {
             var client = clientOpt.get();
             if (checkPassword(password, client.getPassword())) {
                 upgradeClientPassword(client, password);
-                return new com.freelancerconnect.dto.LoginResponse("Login successful as Client!", client.getId(),
+                return new com.example.freelancingbackendservice.dto.LoginResponse("Login successful as Client!", client.getId(),
                         "CLIENT", client.getFullName(), client.getEmail(), 100);
             }
         }
@@ -208,13 +208,13 @@ public class AuthService {
             var freelancer = freelancerOpt.get();
             if (checkPassword(password, freelancer.getPassword())) {
                 upgradeFreelancerPassword(freelancer, password);
-                return new com.freelancerconnect.dto.LoginResponse("Login successful as Freelancer!",
+                return new com.example.freelancingbackendservice.dto.LoginResponse("Login successful as Freelancer!",
                         freelancer.getId(), "FREELANCER", freelancer.getFullName(), freelancer.getEmail(),
                         freelancer.getProfileCompleteness());
             }
         }
 
-        return new com.freelancerconnect.dto.LoginResponse("Invalid identifier or password!", null, null, null, null,
+        return new com.example.freelancingbackendservice.dto.LoginResponse("Invalid identifier or password!", null, null, null, null,
                 0);
     }
 
@@ -227,7 +227,7 @@ public class AuthService {
         return rawPassword.equals(storedPassword);
     }
 
-    private void upgradeAdminPassword(com.freelancerconnect.entity.Admin admin, String rawPassword) {
+    private void upgradeAdminPassword(com.example.freelancingbackendservice.entity.Admin admin, String rawPassword) {
         if (!admin.getPassword().startsWith("$2a$")) {
             admin.setPassword(passwordEncoder.encode(rawPassword));
             adminRepository.save(admin);
