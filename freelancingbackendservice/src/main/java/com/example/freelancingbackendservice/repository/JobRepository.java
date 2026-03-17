@@ -1,4 +1,4 @@
-package com.example.freelancingbackendservice.dto;
+package com.example.freelancingbackendservice.repository;
 
 import com.example.freelancingbackendservice.entity.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
